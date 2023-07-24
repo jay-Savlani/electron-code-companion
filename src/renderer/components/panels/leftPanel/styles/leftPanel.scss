@@ -1,0 +1,28 @@
+:root {
+  --color-default: rgb(37, 9, 37);
+  --color-white: #fff;
+}
+
+.sidebar {
+  min-height: 100vh;
+  width: 200px;
+  background-color: var(--color-default);
+  transition: all 0.5s ease;
+}
+
+.logo_image {
+  height: 20px;
+}
+
+.search_input {
+  width: 100%;
+  outline: none;
+  padding-left: 25px;
+}
+
+.search_icon {
+  color: gray;
+  position: absolute;
+  left: 5px;
+  top: 3px;
+}
