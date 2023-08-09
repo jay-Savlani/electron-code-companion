@@ -1,5 +1,5 @@
 .main-button-group button {
-  font-size: 0.75rem;
+  font-size: 1rem;
   padding: 2px 5px;
   background-color: rgb(37, 9, 37);
   color: white;
@@ -8,4 +8,16 @@
 .input-text-editor {
   resize: none;
   outline: none;
+}
+
+.right-panel-main {
+  // height: 80vh;
+}
+
+.prompt {
+  resize: none;
+}
+
+.prompt-send-icon-wrapper {
+  cursor: pointer;
 }

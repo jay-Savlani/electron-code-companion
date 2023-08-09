@@ -6,9 +6,6 @@ import App from '$components/App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '$styles/app.scss';
 
-// Say something
-console.log('[EVite] : renderer executed');
-
 // Render application
 createRoot(document.getElementById('app') as HTMLElement).render(
   <StrictMode>

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const LeftPanel = () => {
   return (
-    <div className='sidebar p-2 '>
+    <div className='sidebar p-2 bg bg-dark bg-opacity-75'>
       <div className='d-flex align-items-center fs-6'>
         <img src={APP_LOGO} className='logo_image me-2' />
         <div className='app_title'>Code Companion</div>
