@@ -1,26 +1,25 @@
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 
-export default function TextBox() {
-  const [text, setText] = useState('');
-
+// @ts-ignore
+export default function TextBox({ text, setText }) {
   function onChangeText(e: React.ChangeEvent<HTMLTextAreaElement>): void {
     const value = e.target.value;
     setText(value);
   }
 
-  function onSubmit() {
-    // placeholder for api request
+  // function onSubmit() {
+  //   // placeholder for api request
 
-    console.log(text);
-  }
+  //   console.log(text);
+  // }
 
   return (
     <div className='position-relative w-100 h-100 shadow-sm border border-secondary rounded '>
       <textarea
         style={{ outline: 'none' }}
-        className='prompt w-100 h-100 bg bg-dark bg-opacity-25 p-3'
+        className='prompt w-100 h-100 bg bg-secondary-subtle p-3'
         placeholder='Instructions'
         value={text}
         onChange={onChangeText}

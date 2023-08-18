@@ -17,7 +17,7 @@ function SelectLanguage({ language, setlanguage }: ISelectLanguageProps) {
     <select
       value={language}
       onChange={onChangeSelect}
-      className='w-100 mb-2 bg bg-dark text-white p-2'
+      className='form-select bg bg-secondary-subtle'
     >
       {languages.length &&
         languages.map((lang) => (
