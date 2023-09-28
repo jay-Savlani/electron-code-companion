@@ -1,6 +1,6 @@
 {
-  "name": "electrovite-react",
-  "productName": "ElectroVite",
+  "name": "code-companion.ets",
+  "productName": "code-companion.ets",
   "version": "1.2.0",
   "description": "A prebuilt project for creating desktop apps with Electron, React, TypeScript & super fast hot-reload of Vite.",
   "main": ".vite/build/main.js",

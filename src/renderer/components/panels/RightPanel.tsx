@@ -393,6 +393,8 @@ const RightPanel = () => {
 
       <div className='d-flex justify-content-between '>
         <TopButtonGroup
+          text={text}
+          inputCode={inputCode}
           loading={loading}
           onGenerateClick={onGenerateClick}
           onAnalyzeClick={onAnalyzeClick}

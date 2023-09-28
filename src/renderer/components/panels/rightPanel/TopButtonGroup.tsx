@@ -15,6 +15,8 @@ import { EditorTheme } from '../../../hooks/useEditorTheme';
 
 interface ITopButtonGroupProps {
   loading: boolean;
+  text: string;
+  inputCode: string;
   onGenerateClick: () => void;
   onAnalyzeClick: () => void;
   onGenerateTestClick: () => void;
@@ -29,6 +31,8 @@ interface ITopButtonGroupProps {
 }
 
 const TopButtonGroup = ({
+  text,
+  inputCode,
   loading,
   onGenerateClick,
   onAnalyzeClick,
@@ -47,7 +51,7 @@ const TopButtonGroup = ({
       <div className='d-flex gap-3'>
         <button
           className='btn btn-primary d-flex gap-2'
-          disabled={loading}
+          disabled={loading || !text}
           onClick={onGenerateClick}
         >
           <div className='d-flex gap-2 align-items-center'>
@@ -58,7 +62,7 @@ const TopButtonGroup = ({
 
         <button
           className='btn btn-primary d-flex gap-2'
-          disabled={loading}
+          disabled={loading || !inputCode || !text}
           onClick={onGenerateTestClick}
         >
           <div className='d-flex gap-2 align-items-center'>
@@ -70,7 +74,7 @@ const TopButtonGroup = ({
         <div className='btn-group'>
           <button
             className='btn btn-secondary'
-            disabled={loading}
+            disabled={loading || !text || !inputCode}
             onClick={onAnalyzeClick}
           >
             <div className='d-flex gap-2 align-items-center'>
