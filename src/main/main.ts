@@ -1,5 +1,6 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
+import fs from 'fs';
 
 /** Handle creating/removing shortcuts on Windows when installing/uninstalling. */
 if (require('electron-squirrel-startup')) {
@@ -18,7 +19,50 @@ declare const MAIN_WINDOW_VITE_NAME: string;
  * initialization and is ready to create browser windows.
  * Some APIs can only be used after this event occurs.
  */
-app.on('ready', createMainWindow);
+app.on('ready', () => {
+  // ipc handler functions
+  ipcMain.handle('openFile', () => {
+    return dialog.showOpenDialog({ properties: ['openFile'] });
+  });
+
+  ipcMain.handle('readFile', (event, filePath: string) => {
+    let fileData: string | NodeJS.ErrnoException = '';
+    try {
+      fileData = fs.readFileSync(filePath, 'utf8');
+    } catch (e) {
+      fileData = e as string;
+    }
+    return fileData;
+  });
+
+  ipcMain.handle(
+    'writeFile',
+    (event, filePath: string, writeData: string): boolean | string => {
+      let returnValue: boolean | string = true;
+      fs.writeFile(filePath, writeData, (err) => {
+        if (err) {
+          returnValue = err.message;
+        }
+      });
+      return returnValue;
+    },
+  );
+
+  ipcMain.handle(
+    'appendFile',
+    (event, filePath: string, appendData: string): boolean | string => {
+      let returnValue: boolean | string = true;
+      fs.appendFile(filePath, appendData, (err) => {
+        if (err) {
+          returnValue = err.message;
+        }
+      });
+      return returnValue;
+    },
+  );
+
+  createMainWindow();
+});
 
 /**
  * Emitted when the application is activated. Various actions can

@@ -16,7 +16,6 @@ const RenderMarkdown = ({ analysis }: IRenderMarkdownProps) => {
       children={analysis}
       components={{
         code({ node, inline, className, children, ...props }) {
-          console.log('classname', className);
           const match = /language-(\w+)/.exec(className || '');
           return !inline && match ? (
             <SyntaxHighlighter

@@ -4,22 +4,27 @@ import {
   faGears,
   faCode,
   faRefresh,
+  faVial,
 } from '@fortawesome/free-solid-svg-icons';
 
 import ViewDropDown from './ViewDropdown';
 import SelectLanguage from './SelectLanguage';
 import { SetStateAction } from 'react';
 import { IViews } from '../../../hooks/useViews';
+import { EditorTheme } from '../../../hooks/useEditorTheme';
 
 interface ITopButtonGroupProps {
   loading: boolean;
   onGenerateClick: () => void;
   onAnalyzeClick: () => void;
+  onGenerateTestClick: () => void;
   onRefreshClick: () => void;
   language: string;
   setLanguage: React.Dispatch<SetStateAction<string>>;
   views: IViews;
   setViews: React.Dispatch<SetStateAction<IViews>>;
+  editorTheme: EditorTheme;
+  setEditorTheme: React.Dispatch<SetStateAction<EditorTheme>>;
   toggleSettings: () => void;
 }
 
@@ -27,11 +32,14 @@ const TopButtonGroup = ({
   loading,
   onGenerateClick,
   onAnalyzeClick,
+  onGenerateTestClick,
   onRefreshClick,
   language,
   setLanguage,
   views,
   setViews,
+  editorTheme,
+  setEditorTheme,
   toggleSettings,
 }: ITopButtonGroupProps) => {
   return (
@@ -45,6 +53,17 @@ const TopButtonGroup = ({
           <div className='d-flex gap-2 align-items-center'>
             <FontAwesomeIcon icon={faCode} />
             <div>Generate</div>
+          </div>
+        </button>
+
+        <button
+          className='btn btn-primary d-flex gap-2'
+          disabled={loading}
+          onClick={onGenerateTestClick}
+        >
+          <div className='d-flex gap-2 align-items-center'>
+            <FontAwesomeIcon icon={faVial} />
+            <div>Generate Test</div>
           </div>
         </button>
 
@@ -75,7 +94,12 @@ const TopButtonGroup = ({
         <SelectLanguage language={language} setlanguage={setLanguage} />
       </div>
       <div className='d-flex gap-2'>
-        <ViewDropDown views={views} setViews={setViews} />
+        <ViewDropDown
+          views={views}
+          setViews={setViews}
+          editorTheme={editorTheme}
+          setEditorTheme={setEditorTheme}
+        />
         <button
           className='btn btn-secondary'
           disabled={loading}
