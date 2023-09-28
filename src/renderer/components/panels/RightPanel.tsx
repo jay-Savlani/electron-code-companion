@@ -94,8 +94,6 @@ const RightPanel = () => {
     if (activeSelectedHistory) {
       setText(activeSelectedHistory.title);
 
-      console.log('active history', activeSelectedHistory);
-
       if (activeSelectedHistory.output.toLowerCase() !== 'na') {
         setOutputCode(activeSelectedHistory.output);
         activeSelectedHistory.input &&
@@ -120,25 +118,25 @@ const RightPanel = () => {
 
     setTimeout(() => {
       setLoading(false);
-    }, 15000);
+    }, 30000);
 
-    let response = generate_response_sample;
+    // let response = generate_response_sample;
 
-    // let response: any = undefined;
+    let response: any = undefined;
 
-    // try {
-    //   response = await awsApiConnect(
-    //     language,
-    //     [{ role: 'user', content: text }],
-    //     requestOptions.temperature / 100,
-    //     requestOptions.max_tokens,
-    //     'GenerateCode',
-    //   );
-    // } catch {
-    //   console.log('ERROR in fetching data');
-    // }
+    try {
+      response = await awsApiConnect(
+        language,
+        [{ role: 'user', content: text }],
+        requestOptions.temperature / 100,
+        requestOptions.max_tokens,
+        'GenerateCode',
+      );
+    } catch {
+      console.log('ERROR in fetching data');
+    }
 
-    if (response && response.statusCode === 200) {
+    if (response) {
       setCodeAnalysis('');
 
       const generatedCode = response.body || '';
@@ -169,8 +167,6 @@ const RightPanel = () => {
         if (status) setHistoryAppendedToggle((appended) => !appended);
       }
     }
-
-    console.log('response from aws', response);
 
     // const response = await openAIConnect([{ role: 'user', content: text }]);
 
@@ -258,25 +254,25 @@ const RightPanel = () => {
 
     setTimeout(() => {
       setLoading(false);
-    }, 15000);
+    }, 30000);
 
-    let response = sample_analyse_response;
+    // let response = sample_analyse_response;
 
-    // let response: any = undefined;
+    let response: any = undefined;
 
-    // try {
-    //   response = await awsApiConnect(
-    //     language,
-    //     messages,
-    //     requestOptions.temperature / 100,
-    //     requestOptions.max_tokens,
-    //     'AnalyseCode',
-    //   );
-    // } catch {
-    //   console.log('ERROR in fetching data');
-    // }
+    try {
+      response = await awsApiConnect(
+        language,
+        messages,
+        requestOptions.temperature / 100,
+        requestOptions.max_tokens,
+        'AnalyseCode',
+      );
+    } catch {
+      console.log('ERROR in fetching data');
+    }
 
-    if (response && response.statusCode === 200) {
+    if (response) {
       const analysis = response.body || '';
 
       setCodeAnalysis(analysis);
@@ -312,33 +308,31 @@ const RightPanel = () => {
 
     setTimeout(() => {
       setLoading(false);
-    }, 15000);
+    }, 30000);
 
-    let response = sample_test_response;
+    // let response = sample_test_response;
 
-    // try {
-    //   response = await awsApiConnect(
-    //     language,
-    //     [
-    //       {
-    //         role: 'user',
-    //         content: `Generate unit test for this code ${inputCode}`,
-    //       },
-    //     ],
-    //     requestOptions.temperature / 100,
-    //     requestOptions.max_tokens,
-    //     'GenerateTest',
-    //   );
-    // } catch {
-    //   console.log('ERROR in fetching data');
-    // }
+    let response: any = undefined;
 
-    if (response && response.statusCode === 200) {
+    try {
+      response = await awsApiConnect(
+        language,
+        [
+          {
+            role: 'user',
+            content: `Generate unit test for this code ${inputCode}`,
+          },
+        ],
+        requestOptions.temperature / 100,
+        requestOptions.max_tokens,
+        'GenerateTest',
+      );
+    } catch {
+      console.log('ERROR in fetching data');
+    }
+
+    if (response) {
       const generatedTest = response.body || '';
-
-      console.log('generatedTest', generatedTest);
-
-      console.log('inside');
 
       const seperatedCode = generatedTest
         .split('```')[1]

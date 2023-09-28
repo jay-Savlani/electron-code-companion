@@ -9,12 +9,6 @@ export default function TextBox({ text, setText }) {
     setText(value);
   }
 
-  // function onSubmit() {
-  //   // placeholder for api request
-
-  //   console.log(text);
-  // }
-
   return (
     <div className='position-relative w-100 h-100 shadow-sm border border-secondary rounded '>
       <textarea

@@ -9,7 +9,7 @@ import {
 
 // TODO
 // Later to make it as state controlled
-const historyFilePath = '/home/p10/Documents/genai/historytest.txt';
+// const historyFile = '/home/p10/Documents/genai/historytest.txt';
 
 export interface IHistory {
   title: string;
@@ -24,6 +24,8 @@ interface IHistoryProviderProps {
 }
 
 interface IContextValue {
+  historyFile: string;
+  setHistoryFile: React.Dispatch<SetStateAction<string>>;
   historyArray: IHistory[] | null;
   addHistory: () => (appendData: string) => Promise<boolean>;
   clearHistory: () => Promise<boolean>;
@@ -34,6 +36,8 @@ interface IContextValue {
 }
 
 const historyContext = createContext<IContextValue>({
+  historyFile: '',
+  setHistoryFile: () => {},
   historyArray: null,
   addHistory: () => () => Promise.resolve(true),
   clearHistory: () => Promise.resolve(true),
@@ -68,7 +72,10 @@ const convertTextToHistoryArray = (data: string): IHistory[] => {
   return historyArray;
 };
 
+// /home/p10/Documents/genai/historytest.txt
+
 export const HistoryProvider = ({ children }: IHistoryProviderProps) => {
+  const [historyFile, setHistoryFile] = useState('');
   const [history, setHistory] = useState('');
   const [historyAppendedToggle, setHistoryAppendedToggle] = useState(false);
   const [activeSelectedHistory, setActiveSelectedHistory] =
@@ -79,21 +86,21 @@ export const HistoryProvider = ({ children }: IHistoryProviderProps) => {
     const readHistoryFile = async () => {
       const data: { [k: string]: string } | string = await (
         window as any
-      ).osConnectBridge.readFile(historyFilePath);
+      ).osConnectBridge.readFile(historyFile);
       if (typeof data === 'string') {
         setHistory(data);
       }
     };
 
     readHistoryFile();
-  }, [historyAppendedToggle, historyCleared]);
+  }, [historyAppendedToggle, historyCleared, historyFile]);
 
   // method to add to history context
 
   const addHistory = () => {
     return async (appendData: string) => {
       const response = await (window as any).osConnectBridge.appendFile(
-        historyFilePath,
+        historyFile,
         appendData,
       );
       if (typeof response === 'boolean' && response === true) {
@@ -104,7 +111,7 @@ export const HistoryProvider = ({ children }: IHistoryProviderProps) => {
 
   const clearHistory = async () => {
     const response = await (window as any).osConnectBridge.writeFile(
-      historyFilePath,
+      historyFile,
       '',
     );
 
@@ -118,6 +125,8 @@ export const HistoryProvider = ({ children }: IHistoryProviderProps) => {
   }
 
   const contextValue: IContextValue = {
+    historyFile,
+    setHistoryFile,
     historyArray,
     addHistory,
     clearHistory,

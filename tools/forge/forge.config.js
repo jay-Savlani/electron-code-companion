@@ -4,29 +4,29 @@ const rootDir = process.cwd();
 
 module.exports = {
   packagerConfig: {
-    // asar: false,
-    // executableName: 'ElectroVite',
-    // appCopyright: 'Copyright (C) 2023 Guasam, ElectroVite',
-    // icon: path.resolve('assets/favicon.ico'),
+    asar: false,
+    executableName: 'code-companion.ets',
+    appCopyright: 'Copyright (C) 2023 Guasam, ElectroVite',
+    icon: path.resolve('assets/favicon.ico'),
   },
   rebuildConfig: {},
   makers: [
-    {
-      name: '@electron-forge/maker-squirrel',
-      config: {},
-    },
-    {
-      name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
-    },
+    // {
+    //   name: '@electron-forge/maker-squirrel',
+    //   config: {},
+    // },
+    // {
+    //   name: '@electron-forge/maker-zip',
+    //   platforms: ['darwin'],
+    // },
     {
       name: '@electron-forge/maker-deb',
       config: {},
     },
-    {
-      name: '@electron-forge/maker-rpm',
-      config: {},
-    },
+    // {
+    //   name: '@electron-forge/maker-rpm',
+    //   config: {},
+    // },
   ],
   plugins: [
     {
