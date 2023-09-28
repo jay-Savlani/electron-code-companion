@@ -9,7 +9,6 @@ import {
   faFile,
 } from '@fortawesome/free-solid-svg-icons';
 import { EditorTheme } from '../../../hooks/useEditorTheme';
-import { writeFile } from 'original-fs';
 
 interface IMonacoEditorProps {
   language: string;
@@ -50,8 +49,6 @@ function MonacoEditor({
     const fileObject = await (window as any).osConnectBridge.openFile();
     const filePath = fileObject.filePaths[0];
 
-    console.log('filepath', filePath);
-
     const data: { [k: string]: string } | string = await (
       window as any
     ).osConnectBridge.readFile(filePath);
@@ -68,8 +65,6 @@ function MonacoEditor({
       const status: boolean | string = await (
         window as any
       ).osConnectBridge.writeFile(filePath, code);
-
-      // console.log('status', status);
     }
   };
 
