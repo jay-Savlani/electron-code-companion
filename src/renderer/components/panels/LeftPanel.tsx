@@ -14,6 +14,7 @@ const LeftPanel = () => {
     setActiveSelectedHistory,
     clearHistory,
     setHistoryCleared,
+    loading,
   } = useHistory();
   const [filteredArray, setFilteredArray] = useState<IHistory[]>([]);
 
@@ -72,15 +73,24 @@ const LeftPanel = () => {
         />
       </div>
 
-      <ul className='mt-3 fs-5'>
-        {historyArray?.length &&
-          filteredArray.map((history) => (
-            <li
-              className='my-2 history_list_item ps-2'
-              onClick={() => setActiveHistory(history)}
-            >{`> ${history.date} -- ${history.title}`}</li>
-          ))}
-      </ul>
+      {loading ? (
+        <div className='w-100 spinner-container d-flex'>
+          <div
+            style={{ width: '4rem', height: '4rem' }}
+            className='spinner-border text-light mx-auto my-auto'
+          />
+        </div>
+      ) : (
+        <ul className='mt-3 fs-5'>
+          {historyArray?.length &&
+            filteredArray.map((history) => (
+              <li
+                className='my-2 history_list_item ps-2'
+                onClick={() => setActiveHistory(history)}
+              >{`> ${history.date} -- ${history.title}`}</li>
+            ))}
+        </ul>
+      )}
     </div>
   );
 };

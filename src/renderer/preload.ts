@@ -7,4 +7,7 @@ contextBridge.exposeInMainWorld('osConnectBridge', {
     ipcRenderer.invoke('writeFile', filePath, writeData),
   appendFile: (filePath: string, appendData: string) =>
     ipcRenderer.invoke('appendFile', filePath, appendData),
+  createHistoryFile: () => ipcRenderer.invoke('createHistoryFile'),
+  getConfigFile: () => ipcRenderer.invoke('getConfigFile'),
+  setupConfig: () => ipcRenderer.invoke('setupConfig'),
 });
