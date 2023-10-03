@@ -112,6 +112,7 @@ const ViewDropDown = ({
           </DropdownItem>
           {editorThemeArray.map((theme) => (
             <EditorThemeItem
+              key={theme}
               theme={theme}
               themeState={editorTheme}
               setTheme={setEditorTheme}

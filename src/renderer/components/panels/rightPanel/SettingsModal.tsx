@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { faFolderOpen, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,6 +26,7 @@ function SettingsModal({
   const [maxTokens, setMaxTokens] = useState(
     requestOptions.max_tokens.toString(),
   );
+  const [historyPath, setHistoryPath] = useState('');
 
   const { historyFile, setHistoryFile } = useHistory();
 
@@ -37,11 +38,18 @@ function SettingsModal({
     setMaxTokens(e.target.value);
   };
 
+  useEffect(() => {
+    if (!historyPath) setHistoryPath(historyFile);
+  }, [historyFile]);
+
   const onSave = () => {
     setRequestOptions({
       temperature: parseInt(temperature),
       max_tokens: parseInt(maxTokens),
     });
+
+    setHistoryFile(historyPath);
+
     toggle();
   };
 
@@ -50,7 +58,7 @@ function SettingsModal({
 
     if (fileObject.filePaths.length) {
       const filePath = fileObject.filePaths[0];
-      setHistoryFile(filePath);
+      setHistoryPath(filePath);
     }
   };
 
@@ -108,7 +116,7 @@ function SettingsModal({
                 <input
                   type='text'
                   className='form-control px-2'
-                  value={historyFile}
+                  value={historyPath}
                 />
                 <span
                   style={{ cursor: 'pointer' }}

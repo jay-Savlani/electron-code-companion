@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 
 /** Handle creating/removing shortcuts on Windows when installing/uninstalling. */
 if (require('electron-squirrel-startup')) {
@@ -60,6 +61,31 @@ app.on('ready', () => {
       return returnValue;
     },
   );
+
+  ipcMain.handle('setupConfig', async (): Promise<boolean> => {
+    const homeDir = os.homedir();
+    const folder = path.join(homeDir, '.codecompanion');
+    let status: boolean = true;
+    try {
+      await fs.mkdir(folder, (err) => {
+        if (err) status = false;
+      });
+
+      const file = path.join(folder, 'config');
+
+      await fs.writeFile(file, '', (err) => {
+        if (err) status = false;
+      });
+    } catch {
+      status = false;
+    }
+
+    return status;
+  });
+
+  ipcMain.handle('getConfigFile', () => {
+    return path.join(os.homedir(), '.codecompanion', 'config');
+  });
 
   createMainWindow();
 });

@@ -4,12 +4,9 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
-
-// TODO
-// Later to make it as state controlled
-// const historyFile = '/home/p10/Documents/genai/historytest.txt';
 
 export interface IHistory {
   title: string;
@@ -33,6 +30,7 @@ interface IContextValue {
   setHistoryAppendedToggle: React.Dispatch<SetStateAction<boolean>>;
   activeSelectedHistory: IHistory | null;
   setActiveSelectedHistory: React.Dispatch<SetStateAction<IHistory | null>>;
+  loading: boolean;
 }
 
 const historyContext = createContext<IContextValue>({
@@ -45,6 +43,7 @@ const historyContext = createContext<IContextValue>({
   setHistoryAppendedToggle: () => {},
   activeSelectedHistory: null,
   setActiveSelectedHistory: () => {},
+  loading: false,
 });
 
 const convertTextToHistoryArray = (data: string): IHistory[] => {
@@ -68,11 +67,14 @@ const convertTextToHistoryArray = (data: string): IHistory[] => {
     return arr;
   }, [] as IHistory[]);
 
-  console.log('history array', historyArray);
   return historyArray;
 };
 
 // /home/p10/Documents/genai/historytest.txt
+
+const getHistoryPath = (pathConfig: string) => {
+  return pathConfig.split(' ')[1];
+};
 
 export const HistoryProvider = ({ children }: IHistoryProviderProps) => {
   const [historyFile, setHistoryFile] = useState('');
@@ -81,18 +83,61 @@ export const HistoryProvider = ({ children }: IHistoryProviderProps) => {
   const [activeSelectedHistory, setActiveSelectedHistory] =
     useState<IHistory | null>(null);
   const [historyCleared, setHistoryCleared] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const readOrSetupConfig = async () => {
+      const configFile =
+        (await (window as any).osConnectBridge.getConfigFile()) || '';
+
+      const data: { [k: string]: string } | string = await (
+        window as any
+      ).osConnectBridge.readFile(configFile);
+
+      if (typeof data !== 'string') {
+        const status = await (window as any).osConnectBridge.setupConfig();
+        if (!status) return;
+      } else {
+        const historyPath = getHistoryPath(data);
+        setHistoryFile(historyPath);
+      }
+    };
+
+    const changeHistoryPathInConfig = async (historyFile: string) => {
+      const configFile =
+        (await (window as any).osConnectBridge.getConfigFile()) || '';
+
+      await (window as any).osConnectBridge.writeFile(
+        configFile,
+        `path ${historyFile}`,
+      );
+    };
+
+    if (!historyFile) {
+      readOrSetupConfig();
+    }
+    // change history file for path config
+    else {
+      changeHistoryPathInConfig(historyFile);
+    }
+  }, [historyFile]);
 
   useEffect(() => {
     const readHistoryFile = async () => {
       const data: { [k: string]: string } | string = await (
         window as any
       ).osConnectBridge.readFile(historyFile);
+
       if (typeof data === 'string') {
         setHistory(data);
       }
     };
 
+    setLoading(true);
+
     readHistoryFile();
+
+    setLoading(false);
   }, [historyAppendedToggle, historyCleared, historyFile]);
 
   // method to add to history context
@@ -120,9 +165,7 @@ export const HistoryProvider = ({ children }: IHistoryProviderProps) => {
 
   let historyArray: IHistory[] | null = null;
 
-  if (!!history) {
-    historyArray = convertTextToHistoryArray(history);
-  }
+  historyArray = useMemo(() => convertTextToHistoryArray(history), [history]);
 
   const contextValue: IContextValue = {
     historyFile,
@@ -134,6 +177,7 @@ export const HistoryProvider = ({ children }: IHistoryProviderProps) => {
     setHistoryAppendedToggle,
     activeSelectedHistory,
     setActiveSelectedHistory,
+    loading,
   };
 
   return (
