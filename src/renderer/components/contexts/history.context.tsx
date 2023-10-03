@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 
@@ -66,7 +67,6 @@ const convertTextToHistoryArray = (data: string): IHistory[] => {
     return arr;
   }, [] as IHistory[]);
 
-  console.log('history array', historyArray);
   return historyArray;
 };
 
@@ -165,9 +165,7 @@ export const HistoryProvider = ({ children }: IHistoryProviderProps) => {
 
   let historyArray: IHistory[] | null = null;
 
-  if (!!history) {
-    historyArray = convertTextToHistoryArray(history);
-  }
+  historyArray = useMemo(() => convertTextToHistoryArray(history), [history]);
 
   const contextValue: IContextValue = {
     historyFile,

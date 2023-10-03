@@ -88,6 +88,7 @@ const RightPanel = () => {
     addHistory,
     setHistoryAppendedToggle,
     activeSelectedHistory,
+    setActiveSelectedHistory,
   } = useHistory();
 
   useEffect(() => {
@@ -114,6 +115,7 @@ const RightPanel = () => {
   const appendData = addHistory();
 
   const onGenerateClick = async () => {
+    setActiveSelectedHistory(null);
     setLoading(true);
 
     setTimeout(() => {
@@ -151,11 +153,11 @@ const RightPanel = () => {
 
       // set in history
       if (!doesHistoryExist(text, historyArray)) {
-        const today = moment().format('YYYY-MM-DD');
+        const now = moment().format('YYYY-MM-DD, h:mm:ss a');
         const historyTextToSave =
           text +
           '***' +
-          today +
+          now +
           '***' +
           ' ' +
           '***' +
@@ -177,11 +179,11 @@ const RightPanel = () => {
 
     //   // set in history
     //   if (!doesHistoryExist(text, historyArray)) {
-    //     const today = moment().format('YYYY-MM-DD');
+    //     const now = moment().format('YYYY-MM-DD');
     //     const historyTextToSave =
     //       text +
     //       '***' +
-    //       today +
+    //       now +
     //       '***' +
     //       'NA' +
     //       '***' +
@@ -214,11 +216,11 @@ const RightPanel = () => {
   //   const _analysis = 'hello analysis';
 
   //   if (!doesHistoryExist(text, historyArray)) {
-  //     const today = moment().format('YYYY-MM-DD');
+  //     const now = moment().format('YYYY-MM-DD');
   //     const historyTextToSave =
   //       text +
   //       '***' +
-  //       today +
+  //       now +
   //       '***' +
   //       inputCode +
   //       '***' +
@@ -250,6 +252,7 @@ const RightPanel = () => {
       });
     }
 
+    setActiveSelectedHistory(null);
     setLoading(true);
 
     setTimeout(() => {
@@ -278,7 +281,7 @@ const RightPanel = () => {
       setCodeAnalysis(analysis);
 
       if (!doesHistoryExist(text, historyArray)) {
-        const today = moment().format('YYYY-MM-DD');
+        const now = moment().format('YYYY-MM-DD, h:mm:ss a');
 
         const title = (!!text && text) || `analyse - ${language}`;
         const _inputCode = (!!inputCode && inputCode) || ' ';
@@ -286,7 +289,7 @@ const RightPanel = () => {
         const historyTextToSave =
           title +
           '***' +
-          today +
+          now +
           '***' +
           _inputCode +
           '***' +
@@ -304,6 +307,7 @@ const RightPanel = () => {
   };
 
   const onGenerateTestClick = async () => {
+    setActiveSelectedHistory(null);
     setLoading(true);
 
     setTimeout(() => {
@@ -343,7 +347,7 @@ const RightPanel = () => {
       setOutputCode(seperatedCode);
 
       if (!doesHistoryExist(text, historyArray)) {
-        const today = moment().format('YYYY-MM-DD');
+        const now = moment().format('YYYY-MM-DD, h:mm:ss a');
 
         const title = (!!text && text) || `generate test - ${language}`;
         const _inputCode = (!!inputCode && inputCode) || ' ';
@@ -351,7 +355,7 @@ const RightPanel = () => {
         const historyTextToSave =
           title +
           '***' +
-          today +
+          now +
           '***' +
           _inputCode +
           '***' +

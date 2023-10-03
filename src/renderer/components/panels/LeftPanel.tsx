@@ -83,8 +83,9 @@ const LeftPanel = () => {
       ) : (
         <ul className='mt-3 fs-5'>
           {historyArray?.length &&
-            filteredArray.map((history) => (
+            filteredArray.map((history, index) => (
               <li
+                key={index}
                 className='my-2 history_list_item ps-2'
                 onClick={() => setActiveHistory(history)}
               >{`> ${history.date} -- ${history.title}`}</li>
